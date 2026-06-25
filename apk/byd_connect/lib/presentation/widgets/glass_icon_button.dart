@@ -83,7 +83,7 @@ class _GlassIconButtonState extends State<GlassIconButton>
             ClipRRect(
               borderRadius: BorderRadius.circular(14),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   width: widget.size,
