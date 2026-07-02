@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Mensal — Junho 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rose-100: #fdf2f4;
+            --rose-200: #f9e4e8;
+            --rose-300: #f0c4cc;
+            --rose-400: #e49caa;
+            --rose-500: #d4788a;
+            --rose-600: #c4627a;
+            --rose-700: #a14d66;
+            --rose-800: #8a4158;
+            --rose-900: #6d3345;
+            --gold: #d4a574;
+            --gold-light: #e8c9a8;
+            --gold-dark: #b8956a;
+            --cream: #faf6f0;
+            --dark-bg: #0a080c;
+            --dark-bg-2: #120e14;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: var(--dark-bg);
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Vignette effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(10, 8, 12, 0.4) 100%);
+        }
+
+        /* ============ PARTICLES ============ */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .particle.heart {
+            color: var(--rose-400);
+            font-size: 14px;
+            animation: particleFloat linear forwards;
+            text-shadow: 0 0 15px var(--rose-500), 0 0 30px rgba(212, 120, 138, 0.3);
+        }
+
+        .particle.star {
+            width: 4px;
+            height: 4px;
+            background: var(--gold-light);
+            box-shadow: 0 0 8px var(--gold), 0 0 15px rgba(212, 165, 116, 0.4);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .particle.sparkle {
+            width: 3px;
+            height: 3px;
+            background: white;
+            box-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* ============ SLIDES ============ */
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            scroll-snap-align: start;
+            padding: 40px 20px;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(10, 8, 12, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        /* Slide 1: Cover */
+        .slide-cover {
+            background:
+                radial-gradient(ellipse 100% 80% at 50% 120%, rgba(180, 80, 100, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 20% 20%, rgba(100, 60, 80, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse 60% 80% at 80% 80%, rgba(120, 70, 90, 0.08) 0%, transparent 40%),
+                linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg-2) 100%);
+        }
+
+        .slide-cover .content {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .month-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            border: 1px solid var(--rose-700);
+            border-radius: 30px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--rose-300);
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s ease 0.3s forwards;
+        }
+
+        .cover-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(4rem, 12vw, 8rem);
+            color: var(--cream);
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow:
+                0 0 60px rgba(212, 120, 138, 0.4),
+                0 0 120px rgba(212, 120, 138, 0.2),
+                0 2px 40px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: scale(0.9);
+            animation: scaleIn 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
+        }
+
+        .cover-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--rose-300);
+            letter-spacing: 8px;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeUp 1s ease 1s forwards;
+        }
+
+        .cover-heart {
+            width: 120px;
+            height: 108px;
+            position: relative;
+            margin: 0 auto 50px;
+            opacity: 0;
+            animation: heartReveal 1.2s ease 1.4s forwards;
+        }
+
+        .cover-heart::before,
+        .cover-heart::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 95px;
+            border-radius: 60px 60px 0 0;
+        }
+
+        .cover-heart::before {
+            left: 58px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+            background: linear-gradient(170deg, var(--rose-300) 0%, var(--rose-400) 50%, var(--rose-500) 100%);
+            box-shadow:
+                inset 6px 0 20px rgba(255, 255, 255, 0.25),
+                0 0 40px rgba(212, 120, 138, 0.4),
+                0 0 80px rgba(212, 120, 138, 0.2);
+            animation: heartbeat 2s ease-in-out infinite;
+            animation-delay: 2.6s;
+        }
+
+        .cover-heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+            background: linear-gradient(190deg, var(--rose-200) 0%, var(--rose-300) 60%, var(--rose-400) 100%);
+            box-shadow:
+                inset -4px 0 15px rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(212, 120, 138, 0.4),
+                0 0 80px rgba(212, 120, 138, 0.2);
+            animation: heartbeat 2s ease-in-out infinite;
+            animation-delay: 2.6s;
+        }
+
+        .cover-divider {
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--rose-600), transparent);
+            margin: 0 auto 30px;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.8s forwards;
+        }
+
+        .cover-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: rgba(250, 246, 240, 0.6);
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeUp 1s ease 2s forwards;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeIn 1s ease 2.5s forwards, bounce 2s ease-in-out 3.5s infinite;
+        }
+
+        .scroll-hint span {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--rose-400);
+        }
+
+        .scroll-hint .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid var(--rose-400);
+            border-bottom: 2px solid var(--rose-400);
+            transform: rotate(45deg);
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes heartReveal {
+            to { opacity: 1; }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: rotate(-45deg) scale(1); }
+            8% { transform: rotate(-45deg) scale(1.08); }
+            16% { transform: rotate(-45deg) scale(1); }
+            24% { transform: rotate(-45deg) scale(1.05); }
+            32% { transform: rotate(-45deg) scale(1); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Slide 2: Stats */
+        .slide-stats {
+            background: var(--dark-bg-2);
+        }
+
+        .stats-container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .stats-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .stats-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            color: var(--cream);
+            margin-bottom: 10px;
+        }
+
+        .stats-header p {
+            color: var(--rose-400);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 120, 138, 0.12);
+            border-radius: 24px;
+            padding: 35px 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(212, 120, 138, 0.3);
+            box-shadow:
+                0 25px 80px rgba(212, 120, 138, 0.15),
+                0 0 40px rgba(212, 120, 138, 0.05);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 120, 138, 0.05) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+
+        .stat-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--rose-500), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 500;
+            color: var(--rose-300);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(250, 246, 240, 0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Slide 3: Timeline */
+        .slide-timeline {
+            background:
+                radial-gradient(ellipse 80% 60% at 50% 0%, rgba(180, 80, 100, 0.08) 0%, transparent 50%),
+                var(--dark-bg);
+        }
+
+        .timeline-container {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .timeline-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            color: var(--cream);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--rose-600), var(--rose-800), transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 45px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item::before {
+            content: '♥';
+            position: absolute;
+            left: -40px;
+            top: 0;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--rose-300);
+            background: var(--dark-bg);
+            border-radius: 50%;
+            border: 2px solid var(--rose-500);
+            box-shadow: 0 0 15px rgba(212, 120, 138, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.2);
+            box-shadow: 0 0 25px rgba(212, 120, 138, 0.5);
+        }
+
+        .timeline-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--cream);
+            margin-bottom: 8px;
+        }
+
+        .timeline-desc {
+            color: rgba(250, 246, 240, 0.6);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Slide 4: Love Letter */
+        .slide-letter {
+            background:
+                radial-gradient(ellipse 60% 40% at 50% 50%, rgba(180, 80, 100, 0.1) 0%, transparent 60%),
+                var(--dark-bg-2);
+            padding: 80px 20px;
+        }
+
+        .letter-container {
+            max-width: 650px;
+            width: 100%;
+            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 120, 138, 0.1);
+            border-radius: 30px;
+            padding: 60px 50px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .letter-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .letter-container::before,
+        .letter-container::after {
+            content: '"';
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            color: var(--rose-800);
+            line-height: 1;
+            opacity: 0.3;
+        }
+
+        .letter-container::before {
+            top: 20px;
+            left: 30px;
+        }
+
+        .letter-container::after {
+            content: '"';
+            bottom: -30px;
+            right: 30px;
+        }
+
+        .letter-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .letter-greeting {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: var(--rose-300);
+            margin-bottom: 30px;
+        }
+
+        .letter-text {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: rgba(250, 246, 240, 0.85);
+            margin-bottom: 30px;
+        }
+
+        .letter-signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: var(--cream);
+            text-align: right;
+            margin-top: 40px;
+        }
+
+        /* Slide 5: Final */
+        .slide-final {
+            background:
+                radial-gradient(ellipse 100% 80% at 50% 100%, rgba(180, 80, 100, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 50% 0%, rgba(100, 60, 80, 0.1) 0%, transparent 40%),
+                var(--dark-bg);
+        }
+
+        .final-content {
+            text-align: center;
+        }
+
+        .final-heart {
+            position: relative;
+            width: 220px;
+            height: 200px;
+            margin: 0 auto 50px;
+        }
+
+        .final-heart-main {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .final-heart-main::before,
+        .final-heart-main::after {
+            content: '';
+            position: absolute;
+            width: 110px;
+            height: 175px;
+            border-radius: 110px 110px 0 0;
+        }
+
+        .final-heart-main::before {
+            left: 107px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+            background: linear-gradient(170deg, var(--rose-300) 0%, var(--rose-400) 40%, var(--rose-500) 100%);
+            box-shadow:
+                inset 8px 0 30px rgba(255, 255, 255, 0.3),
+                0 0 60px rgba(212, 120, 138, 0.5),
+                0 0 100px rgba(212, 120, 138, 0.3);
+        }
+
+        .final-heart-main::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+            background: linear-gradient(190deg, var(--rose-200) 0%, var(--rose-300) 40%, var(--rose-400) 100%);
+            box-shadow:
+                inset -6px 0 25px rgba(255, 255, 255, 0.25),
+                0 0 60px rgba(212, 120, 138, 0.5),
+                0 0 100px rgba(212, 120, 138, 0.3);
+        }
+
+        .final-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(212, 120, 138, 0.25) 0%, rgba(212, 120, 138, 0.1) 30%, transparent 60%);
+            animation: finalGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes finalGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.4; }
+        }
+
+        .final-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: var(--cream);
+            text-shadow:
+                0 0 80px rgba(212, 120, 138, 0.5),
+                0 0 150px rgba(212, 120, 138, 0.25),
+                0 3px 50px rgba(0, 0, 0, 0.5);
+            animation: finalPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes finalPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .final-subtext {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--rose-300);
+            letter-spacing: 6px;
+            margin-top: 20px;
+        }
+
+        .final-footer {
+            margin-top: 80px;
+            font-size: 0.8rem;
+            color: rgba(250, 246, 240, 0.3);
+            letter-spacing: 3px;
+        }
+
+        /* ============ THINGS I LIKE SLIDE ============ */
+        .slide-things {
+            background:
+                radial-gradient(ellipse 60% 40% at 50% 50%, rgba(212, 165, 116, 0.08) 0%, transparent 60%),
+                var(--dark-bg);
+        }
+
+        .things-container {
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .things-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 400;
+            color: var(--cream);
+            margin-bottom: 10px;
+        }
+
+        .things-header p {
+            color: var(--gold);
+            font-style: italic;
+            font-size: 1rem;
+            margin-bottom: 50px;
+        }
+
+        .things-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .things-item {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 165, 116, 0.12);
+            border-radius: 20px;
+            padding: 22px 30px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            backdrop-filter: blur(10px);
+        }
+
+        .things-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .things-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--gold), var(--rose-500));
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+        }
+
+        .things-item:hover {
+            transform: translateX(8px) scale(1.01);
+            border-color: rgba(212, 165, 116, 0.25);
+            box-shadow: 0 15px 50px rgba(212, 165, 116, 0.08);
+        }
+
+        .things-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .things-item .number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .things-item .text {
+            font-size: 1.1rem;
+            color: var(--cream);
+            line-height: 1.5;
+        }
+
+        .things-item .hint {
+            font-size: 0.75rem;
+            color: rgba(250, 246, 240, 0.3);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .things-item.revealed .hint {
+            opacity: 0;
+        }
+
+        .things-item .revealed-text {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+            color: var(--rose-300);
+            font-style: italic;
+            margin-top: 0;
+            font-size: 1rem;
+        }
+
+        .things-item.revealed .revealed-text {
+            max-height: 100px;
+            opacity: 1;
+            margin-top: 12px;
+        }
+
+        .things-footer {
+            margin-top: 40px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.5rem;
+            color: var(--rose-400);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .things-footer.visible {
+            opacity: 1;
+        }
+
+        /* ============ PROGRESS BAR ============ */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--rose-600), var(--rose-400), var(--gold));
+            z-index: 1000;
+            transition: width 0.15s ease;
+            box-shadow: 0 0 15px rgba(212, 120, 138, 0.5);
+        }
+
+        /* ============ SLIDE COUNTER ============ */
+        .slide-counter {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--rose-400);
+            letter-spacing: 2px;
+            z-index: 100;
+            opacity: 0.6;
+            backdrop-filter: blur(5px);
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: rgba(10, 8, 12, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .slide-counter:hover {
+            opacity: 1;
+        }
+
+        /* ============ CORNER DECORATIONS ============ */
+        .corner-decor {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .corner-decor::before,
+        .corner-decor::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(135deg, var(--rose-600), var(--rose-800));
+        }
+
+        .corner-decor.top-left { top: 20px; left: 20px; }
+        .corner-decor.top-left::before { width: 60px; height: 1px; top: 0; left: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+        .corner-decor.top-left::after { width: 1px; height: 60px; top: 0; left: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+
+        .corner-decor.top-right { top: 20px; right: 20px; }
+        .corner-decor.top-right::before { width: 60px; height: 1px; top: 0; right: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+        .corner-decor.top-right::after { width: 1px; height: 60px; top: 0; right: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+
+        .corner-decor.bottom-left { bottom: 20px; left: 20px; }
+        .corner-decor.bottom-left::before { width: 60px; height: 1px; bottom: 0; left: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+        .corner-decor.bottom-left::after { width: 1px; height: 60px; bottom: 0; left: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+
+        .corner-decor.bottom-right { bottom: 20px; right: 20px; }
+        .corner-decor.bottom-right::before { width: 60px; height: 1px; bottom: 0; right: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+        .corner-decor.bottom-right::after { width: 1px; height: 60px; bottom: 0; right: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+
+        /* ============ MUSIC TOGGLE ============ */
+        .music-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 120, 138, 0.3);
+            background: rgba(10, 8, 12, 0.6);
+            backdrop-filter: blur(10px);
+            color: var(--rose-300);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+            opacity: 0.7;
+        }
+
+        .music-toggle:hover {
+            opacity: 1;
+            border-color: rgba(212, 120, 138, 0.5);
+            box-shadow: 0 0 30px rgba(212, 120, 138, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 15px;
+            }
+
+            .letter-container {
+                padding: 40px 25px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 25px 15px;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+
+            .timeline-item::before {
+                left: -30px;
+            }
+
+            .final-heart {
+                width: 150px;
+                height: 135px;
+            }
+
+            .final-heart-main::before {
+                width: 75px;
+                height: 120px;
+                left: 72px;
+            }
+
+            .final-heart-main::after {
+                width: 75px;
+                height: 120px;
+            }
+
+            .music-toggle {
+                top: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .slide-counter {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="corner-decor top-left"></div>
+    <div class="corner-decor top-right"></div>
+    <div class="corner-decor bottom-left"></div>
+    <div class="corner-decor bottom-right"></div>
+
+    <div class="slide-counter">
+        <span id="currentSlide">01</span> / <span id="totalSlides">05</span>
+    </div>
+
+    <button class="music-toggle" id="musicToggle" title="Toggle Music">♪</button>
+
+        <div class="particles-container" id="particles"></div>
+
+    <!-- SLIDE 1: Cover -->
+    <section class="slide slide-cover" id="slide1">
+        <div class="content">
+            <div class="month-badge">Junho 2026</div>
+            <h1 class="cover-title">Relatório</h1>
+            <p class="cover-subtitle">do nosso amor</p>
+            <div class="cover-heart"></div>
+            <div class="cover-divider"></div>
+            <p class="cover-tagline">Um mês de momentos preciosos</p>
+        </div>
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <div class="arrow"></div>
+        </div>
+    </section>
+
+    <!-- SLIDE 2: Stats -->
+    <section class="slide slide-stats" id="slide2">
+        <div class="stats-container">
+            <div class="stats-header">
+                <h2>Números do Coração</h2>
+                <p>Cada número representa um momento contigo</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card" data-delay="0">
+                    <span class="stat-icon">💋</span>
+                    <div class="stat-number" style="font-size: 1.8rem;">já perdi as contas</div>
+                    <div class="stat-label">Beijos</div>
+                </div>
+                <div class="stat-card" data-delay="100">
+                    <span class="stat-icon">😊</span>
+                    <div class="stat-number" data-target="31">0</div>
+                    <div class="stat-label">Sorrisos</div>
+                </div>
+                <div class="stat-card" data-delay="200">
+                    <span class="stat-icon">☀️</span>
+                    <div class="stat-number" style="font-size: 1.8rem;">toda hora</div>
+                    <div class="stat-label">Vezes que pensei em você</div>
+                </div>
+                <div class="stat-card" data-delay="300">
+                    <span class="stat-icon">⭐</span>
+                    <div class="stat-number" data-target="∞">∞</div>
+                    <div class="stat-label">Amor</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: Timeline -->
+    <section class="slide slide-timeline" id="slide3">
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <h2> Momentos Marcantes</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item" data-delay="0">
+                    <div class="timeline-date">13 DE JUNHO</div>
+                    <h3 class="timeline-title">O Primeiro Dia</h3>
+                    <p class="timeline-desc">Aquele dia que você chegou e mudou tudo. O dia que tudo começou.</p>
+                </div>
+                <div class="timeline-item" data-delay="150">
+                    <div class="timeline-date">15 DE JUNHO</div>
+                    <h3 class="timeline-title">Uma Semana Juntos</h3>
+                    <p class="timeline-desc">Uma semana já e parecia que era sempre assim. Seu sorriso virando parte da minha rotina.</p>
+                </div>
+                <div class="timeline-item" data-delay="300">
+                    <div class="timeline-date">25 DE JUNHO</div>
+                    <h3 class="timeline-title">Meio do Mês</h3>
+                    <p class="timeline-desc">Já não conseguia mais imaginar os dias sem te ver. Você virou meu lugar favorito.</p>
+                </div>
+                <div class="timeline-item" data-delay="450">
+                    <div class="timeline-date">30 DE JUNHO</div>
+                    <h3 class="timeline-title">Último Dia</h3>
+                    <p class="timeline-desc">Junho se encerrou com você nos meus pensamentos, já ansioso pelo que julho traria.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: Love Letter -->
+    <section class="slide slide-letter" id="slide4">
+        <div class="letter-container">
+            <div class="letter-content">
+                <div class="letter-greeting">Minha querida,</div>
+                <p class="letter-text">
+                    Junho passou como um sopro, mas cada momento ficou gravado aqui dentro.
+                    Cada risada, cada olhar, cada "eu te amo" dito com os olhos — tudo criou
+                    memórias que vou guardar para sempre.
+                </p>
+                <p class="letter-text">
+                    Você é a razão das minhas manhãs parecerem mais brilhantes e das minhas
+                    noites serem mais quentes. Obrigado por ser exatamente quem você é.
+                </p>
+                <p class="letter-text">
+                    Que julho nos traga ainda mais motivos para sorrir juntos.
+                </p>
+                <div class="letter-signature">Com todo meu amor,<br>Para sempre seu ♥</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: Things I Like -->
+    <section class="slide slide-things" id="slide5">
+        <div class="things-container">
+            <div class="things-header">
+                <h2>5 Coisas que eu mais gosto em você</h2>
+            </div>
+            <ul class="things-list">
+                <li class="things-item revealed" data-delay="0">
+                    <span class="number">01</span>
+                    <span class="text">O seu sorriso</span>
+                    <div class="revealed-text">Aquele que ilumina meu dia inteiro, mesmo nos dias cinza</div>
+                </li>
+                <li class="things-item revealed" data-delay="100">
+                    <span class="number">02</span>
+                    <span class="text">Como você me faz sentir</span>
+                    <div class="revealed-text">Em casa, mesmo quando estamos longe</div>
+                </li>
+                <li class="things-item revealed" data-delay="200">
+                    <span class="number">03</span>
+                    <span class="text">A sua risada</span>
+                    <div class="revealed-text">É a minha música favorita, eu podia ouvir o dia todo</div>
+                </li>
+                <li class="things-item revealed" data-delay="300">
+                    <span class="number">04</span>
+                    <span class="text">Você me fazer melhor</span>
+                    <div class="revealed-text">De um jeito que eu nem sei explicar, só sinto</div>
+                </li>
+                <li class="things-item revealed" data-delay="400">
+                    <span class="number">05</span>
+                    <span class="text">Tudo em você</span>
+                    <div class="revealed-text">Cada detalhe, cada imperfeição perfeita que é só sua</div>
+                </li>
+            </ul>
+            <div class="things-footer visible">E tem muito mais... mas aí não ia ter fim</div>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: Final -->
+    <section class="slide slide-final" id="slide5">
+        <div class="final-content">
+            <div class="final-heart">
+                <div class="final-glow"></div>
+                <div class="final-heart-main"></div>
+            </div>
+            <h2 class="final-text">Te Amo</h2>
+            <p class="final-subtext">vamos sair sábado? 🥺
+            <div class="final-footer">Feito com amor</div>
+        </div>
+    </section>
+
+    <script>
+        // ============ PARTICLES SYSTEM ============
+        const particlesContainer = document.getElementById('particles');
+        const particleTypes = ['heart', 'star', 'sparkle'];
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            const type = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+            particle.className = `particle ${type}`;
+
+            const startX = Math.random() * 100;
+            const duration = 8 + Math.random() * 8;
+
+            particle.style.left = `${startX}vw`;
+            particle.style.bottom = '-20px';
+            particle.style.animationDuration = `${duration}s`;
+
+            if (type === 'heart') {
+                particle.innerHTML = '♥';
+                particle.style.fontSize = `${10 + Math.random() * 10}px`;
+            }
+
+            particlesContainer.appendChild(particle);
+
+            setTimeout(() => particle.remove(), duration * 1000);
+        }
+
+        // Initial burst
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createParticle, i * 200);
+        }
+
+        // Continuous spawning
+        setInterval(createParticle, 1200);
+
+        // ============ SCROLL ANIMATIONS ============
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px'
+        };
+
+        const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Animate cards
+                    const cards = entry.target.querySelectorAll('.stat-card, .timeline-item, .letter-container');
+                    cards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, parseInt(card.dataset.delay) || index * 100);
+                    });
+
+                    // Animate numbers
+                    const numbers = entry.target.querySelectorAll('.stat-number[data-target]');
+                    numbers.forEach(num => {
+                        if (num.dataset.target !== '∞') {
+                            animateNumber(num);
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            slideObserver.observe(slide);
+        });
+
+        // ============ NUMBER ANIMATION ============
+        function animateNumber(element) {
+            const target = parseInt(element.dataset.target);
+            const duration = 2000;
+            const steps = 60;
+            const increment = target / steps;
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, duration / steps);
+        }
+
+        // ============ PROGRESS BAR ============
+        const progressBar = document.getElementById('progressBar');
+        const totalSlides = document.getElementById('totalSlides');
+        const currentSlideEl = document.getElementById('currentSlide');
+        const slides = document.querySelectorAll('.slide');
+
+        totalSlides.textContent = String(slides.length).padStart(2, '0');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Update slide counter
+            let currentSlide = 1;
+            slides.forEach((slide, index) => {
+                const rect = slide.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2) {
+                    currentSlide = index + 1;
+                }
+            });
+            currentSlideEl.textContent = String(currentSlide).padStart(2, '0');
+        });
+
+        // ============ MUSIC TOGGLE (VISUAL ONLY) ============
+        const musicToggle = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            musicToggle.style.color = isPlaying ? 'var(--gold)' : 'var(--rose-300)';
+            musicToggle.textContent = isPlaying ? '♫' : '♪';
+        });
+
+        // ============ PARALLAX ON MOUSE MOVE ============
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            document.querySelectorAll('.slide-cover .content').forEach(el => {
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // ============ HEART CLICK EFFECT ============
+        document.querySelectorAll('.heart, .cover-heart, .final-heart-main').forEach(heart => {
+            heart.style.cursor = 'pointer';
+            heart.addEventListener('click', () => {
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => createParticle(), i * 50);
+                }
+            });
+        });
+
+        // ============ SMOOTH SCROLL TO SLIDE ============
+        document.querySelectorAll('.slide').forEach((slide, index) => {
+            slide.addEventListener('wheel', (e) => {
+                if (e.deltaY > 0 && index < slides.length - 1) {
+                    e.preventDefault();
+                    slides[index + 1].scrollIntoView({ behavior: 'smooth' });
+                } else if (e.deltaY < 0 && index > 0) {
+                    e.preventDefault();
+                    slides[index - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            }, { passive: false });
+        });
+
+        // ============ THINGS I LIKE - CLICK TO REVEAL ============
+        document.querySelectorAll('.things-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.classList.contains('revealed')) {
+                    item.classList.remove('revealed');
+                } else {
+                    item.classList.add('revealed');
+                }
+            });
+        });
+
+        // Show things footer when all items are revealed
+        const thingsFooter = document.querySelector('.things-footer');
+        const thingsItems = document.querySelectorAll('.things-item');
+
+        function checkAllRevealed() {
+            const allRevealed = Array.from(thingsItems).every(item => item.classList.contains('revealed'));
+            if (allRevealed) {
+                thingsFooter.classList.add('visible');
+            }
+        }
+
+        thingsItems.forEach(item => {
+            item.addEventListener('click', checkAllRevealed);
+        });
+    </script>
+</body>
+</html>
