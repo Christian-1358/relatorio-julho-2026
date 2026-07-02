@@ -18,6 +18,7 @@
             --rose-900: #6d3345;
             --gold: #d4a574;
             --gold-light: #e8c9a8;
+            --gold-dark: #b8956a;
             --cream: #faf6f0;
             --dark-bg: #0a080c;
             --dark-bg-2: #120e14;
@@ -42,6 +43,33 @@
             overflow-x: hidden;
         }
 
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Vignette effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(10, 8, 12, 0.4) 100%);
+        }
+
         /* ============ PARTICLES ============ */
         .particles-container {
             position: fixed;
@@ -62,23 +90,24 @@
 
         .particle.heart {
             color: var(--rose-400);
-            font-size: 12px;
+            font-size: 14px;
             animation: particleFloat linear forwards;
-            text-shadow: 0 0 10px var(--rose-500);
+            text-shadow: 0 0 15px var(--rose-500), 0 0 30px rgba(212, 120, 138, 0.3);
         }
 
         .particle.star {
-            width: 3px;
-            height: 3px;
+            width: 4px;
+            height: 4px;
             background: var(--gold-light);
-            box-shadow: 0 0 6px var(--gold);
+            box-shadow: 0 0 8px var(--gold), 0 0 15px rgba(212, 165, 116, 0.4);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
         }
 
         .particle.sparkle {
-            width: 2px;
-            height: 2px;
+            width: 3px;
+            height: 3px;
             background: white;
-            box-shadow: 0 0 8px white;
+            box-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5);
         }
 
         @keyframes particleFloat {
@@ -110,6 +139,17 @@
             scroll-snap-align: start;
             padding: 40px 20px;
             overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(10, 8, 12, 0.3) 100%);
+            pointer-events: none;
         }
 
         /* Slide 1: Cover */
@@ -150,8 +190,9 @@
             line-height: 1;
             margin-bottom: 10px;
             text-shadow:
-                0 0 40px rgba(212, 120, 138, 0.3),
-                0 0 80px rgba(212, 120, 138, 0.15);
+                0 0 60px rgba(212, 120, 138, 0.4),
+                0 0 120px rgba(212, 120, 138, 0.2),
+                0 2px 40px rgba(0, 0, 0, 0.5);
             opacity: 0;
             transform: scale(0.9);
             animation: scaleIn 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
@@ -190,10 +231,11 @@
             left: 58px;
             transform: rotate(-45deg);
             transform-origin: 0 100%;
-            background: linear-gradient(170deg, var(--rose-400) 0%, var(--rose-500) 50%, var(--rose-600) 100%);
+            background: linear-gradient(170deg, var(--rose-300) 0%, var(--rose-400) 50%, var(--rose-500) 100%);
             box-shadow:
-                inset 6px 0 20px rgba(255, 255, 255, 0.2),
-                0 0 60px rgba(212, 120, 138, 0.5);
+                inset 6px 0 20px rgba(255, 255, 255, 0.25),
+                0 0 40px rgba(212, 120, 138, 0.4),
+                0 0 80px rgba(212, 120, 138, 0.2);
             animation: heartbeat 2s ease-in-out infinite;
             animation-delay: 2.6s;
         }
@@ -202,10 +244,11 @@
             left: 0;
             transform: rotate(45deg);
             transform-origin: 100% 100%;
-            background: linear-gradient(190deg, var(--rose-300) 0%, var(--rose-400) 60%, var(--rose-500) 100%);
+            background: linear-gradient(190deg, var(--rose-200) 0%, var(--rose-300) 60%, var(--rose-400) 100%);
             box-shadow:
-                inset -4px 0 15px rgba(255, 255, 255, 0.15),
-                0 0 60px rgba(212, 120, 138, 0.5);
+                inset -4px 0 15px rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(212, 120, 138, 0.4),
+                0 0 80px rgba(212, 120, 138, 0.2);
             animation: heartbeat 2s ease-in-out infinite;
             animation-delay: 2.6s;
         }
@@ -321,22 +364,52 @@
         }
 
         .stat-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-            border: 1px solid rgba(212, 120, 138, 0.15);
-            border-radius: 20px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 120, 138, 0.12);
+            border-radius: 24px;
             padding: 35px 25px;
             text-align: center;
             position: relative;
             overflow: hidden;
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--rose-500);
-            box-shadow: 0 20px 60px rgba(212, 120, 138, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(212, 120, 138, 0.3);
+            box-shadow:
+                0 25px 80px rgba(212, 120, 138, 0.15),
+                0 0 40px rgba(212, 120, 138, 0.05);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 120, 138, 0.05) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .stat-card:hover::after {
+            opacity: 1;
         }
 
         .stat-card.visible {
@@ -426,7 +499,7 @@
             margin-bottom: 45px;
             opacity: 0;
             transform: translateX(-20px);
-            transition: all 0.5s ease;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .timeline-item.visible {
@@ -439,16 +512,23 @@
             position: absolute;
             left: -40px;
             top: 0;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            color: var(--rose-400);
+            font-size: 11px;
+            color: var(--rose-300);
             background: var(--dark-bg);
             border-radius: 50%;
             border: 2px solid var(--rose-500);
+            box-shadow: 0 0 15px rgba(212, 120, 138, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.2);
+            box-shadow: 0 0 25px rgba(212, 120, 138, 0.5);
         }
 
         .timeline-date {
@@ -483,14 +563,18 @@
         .letter-container {
             max-width: 650px;
             width: 100%;
-            background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border: 1px solid rgba(212, 120, 138, 0.12);
+            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 120, 138, 0.1);
             border-radius: 30px;
             padding: 60px 50px;
             position: relative;
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s ease;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .letter-container.visible {
@@ -561,8 +645,8 @@
 
         .final-heart {
             position: relative;
-            width: 200px;
-            height: 180px;
+            width: 220px;
+            height: 200px;
             margin: 0 auto 50px;
         }
 
@@ -576,19 +660,20 @@
         .final-heart-main::after {
             content: '';
             position: absolute;
-            width: 100px;
-            height: 160px;
-            border-radius: 100px 100px 0 0;
+            width: 110px;
+            height: 175px;
+            border-radius: 110px 110px 0 0;
         }
 
         .final-heart-main::before {
-            left: 97px;
+            left: 107px;
             transform: rotate(-45deg);
             transform-origin: 0 100%;
             background: linear-gradient(170deg, var(--rose-300) 0%, var(--rose-400) 40%, var(--rose-500) 100%);
             box-shadow:
-                inset 8px 0 25px rgba(255, 255, 255, 0.25),
-                0 0 80px rgba(212, 120, 138, 0.6);
+                inset 8px 0 30px rgba(255, 255, 255, 0.3),
+                0 0 60px rgba(212, 120, 138, 0.5),
+                0 0 100px rgba(212, 120, 138, 0.3);
         }
 
         .final-heart-main::after {
@@ -597,8 +682,9 @@
             transform-origin: 100% 100%;
             background: linear-gradient(190deg, var(--rose-200) 0%, var(--rose-300) 40%, var(--rose-400) 100%);
             box-shadow:
-                inset -6px 0 20px rgba(255, 255, 255, 0.2),
-                0 0 80px rgba(212, 120, 138, 0.6);
+                inset -6px 0 25px rgba(255, 255, 255, 0.25),
+                0 0 60px rgba(212, 120, 138, 0.5),
+                0 0 100px rgba(212, 120, 138, 0.3);
         }
 
         .final-glow {
@@ -606,15 +692,15 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(212, 120, 138, 0.2) 0%, transparent 60%);
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(212, 120, 138, 0.25) 0%, rgba(212, 120, 138, 0.1) 30%, transparent 60%);
             animation: finalGlow 3s ease-in-out infinite;
         }
 
         @keyframes finalGlow {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.3; }
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.4; }
         }
 
         .final-text {
@@ -622,8 +708,9 @@
             font-size: clamp(3rem, 10vw, 6rem);
             color: var(--cream);
             text-shadow:
-                0 0 60px rgba(212, 120, 138, 0.4),
-                0 0 120px rgba(212, 120, 138, 0.2);
+                0 0 80px rgba(212, 120, 138, 0.5),
+                0 0 150px rgba(212, 120, 138, 0.25),
+                0 3px 50px rgba(0, 0, 0, 0.5);
             animation: finalPulse 2.5s ease-in-out infinite;
         }
 
@@ -682,18 +769,19 @@
         }
 
         .things-item {
-            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-            border: 1px solid rgba(212, 165, 116, 0.15);
-            border-radius: 16px;
-            padding: 20px 30px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 165, 116, 0.12);
+            border-radius: 20px;
+            padding: 22px 30px;
             margin-bottom: 15px;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
             text-align: left;
             opacity: 0;
             transform: translateY(20px);
+            backdrop-filter: blur(10px);
         }
 
         .things-item.visible {
@@ -710,13 +798,13 @@
             width: 4px;
             background: linear-gradient(180deg, var(--gold), var(--rose-500));
             transform: scaleY(0);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
 
         .things-item:hover {
-            transform: translateX(5px);
-            border-color: rgba(212, 165, 116, 0.4);
-            box-shadow: 0 10px 40px rgba(212, 165, 116, 0.1);
+            transform: translateX(8px) scale(1.01);
+            border-color: rgba(212, 165, 116, 0.25);
+            box-shadow: 0 15px 50px rgba(212, 165, 116, 0.08);
         }
 
         .things-item:hover::before {
@@ -784,10 +872,11 @@
             position: fixed;
             top: 0;
             left: 0;
-            height: 3px;
+            height: 2px;
             background: linear-gradient(90deg, var(--rose-600), var(--rose-400), var(--gold));
             z-index: 1000;
-            transition: width 0.1s ease;
+            transition: width 0.15s ease;
+            box-shadow: 0 0 15px rgba(212, 120, 138, 0.5);
         }
 
         /* ============ SLIDE COUNTER ============ */
@@ -801,40 +890,50 @@
             letter-spacing: 2px;
             z-index: 100;
             opacity: 0.6;
+            backdrop-filter: blur(5px);
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: rgba(10, 8, 12, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .slide-counter:hover {
+            opacity: 1;
         }
 
         /* ============ CORNER DECORATIONS ============ */
         .corner-decor {
             position: fixed;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.4;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
         }
 
         .corner-decor::before,
         .corner-decor::after {
             content: '';
             position: absolute;
-            background: var(--rose-700);
+            background: linear-gradient(135deg, var(--rose-600), var(--rose-800));
         }
 
         .corner-decor.top-left { top: 20px; left: 20px; }
-        .corner-decor.top-left::before { width: 50px; height: 1px; top: 0; left: 0; }
-        .corner-decor.top-left::after { width: 1px; height: 50px; top: 0; left: 0; }
+        .corner-decor.top-left::before { width: 60px; height: 1px; top: 0; left: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+        .corner-decor.top-left::after { width: 1px; height: 60px; top: 0; left: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
 
         .corner-decor.top-right { top: 20px; right: 20px; }
-        .corner-decor.top-right::before { width: 50px; height: 1px; top: 0; right: 0; }
-        .corner-decor.top-right::after { width: 1px; height: 50px; top: 0; right: 0; }
+        .corner-decor.top-right::before { width: 60px; height: 1px; top: 0; right: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+        .corner-decor.top-right::after { width: 1px; height: 60px; top: 0; right: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
 
         .corner-decor.bottom-left { bottom: 20px; left: 20px; }
-        .corner-decor.bottom-left::before { width: 50px; height: 1px; bottom: 0; left: 0; }
-        .corner-decor.bottom-left::after { width: 1px; height: 50px; bottom: 0; left: 0; }
+        .corner-decor.bottom-left::before { width: 60px; height: 1px; bottom: 0; left: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+        .corner-decor.bottom-left::after { width: 1px; height: 60px; bottom: 0; left: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
 
         .corner-decor.bottom-right { bottom: 20px; right: 20px; }
-        .corner-decor.bottom-right::before { width: 50px; height: 1px; bottom: 0; right: 0; }
-        .corner-decor.bottom-right::after { width: 1px; height: 50px; bottom: 0; right: 0; }
+        .corner-decor.bottom-right::before { width: 60px; height: 1px; bottom: 0; right: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
+        .corner-decor.bottom-right::after { width: 1px; height: 60px; bottom: 0; right: 0; box-shadow: 0 0 10px rgba(212, 120, 138, 0.3); }
 
         /* ============ MUSIC TOGGLE ============ */
         .music-toggle {
@@ -844,8 +943,9 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            border: 1px solid var(--rose-600);
-            background: rgba(10, 8, 12, 0.8);
+            border: 1px solid rgba(212, 120, 138, 0.3);
+            background: rgba(10, 8, 12, 0.6);
+            backdrop-filter: blur(10px);
             color: var(--rose-300);
             cursor: pointer;
             z-index: 1000;
@@ -853,14 +953,15 @@
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             opacity: 0.7;
         }
 
         .music-toggle:hover {
             opacity: 1;
-            border-color: var(--rose-400);
-            box-shadow: 0 0 20px rgba(212, 120, 138, 0.3);
+            border-color: rgba(212, 120, 138, 0.5);
+            box-shadow: 0 0 30px rgba(212, 120, 138, 0.3);
+            transform: scale(1.05);
         }
 
         /* ============ RESPONSIVE ============ */
@@ -925,6 +1026,7 @@
     </style>
 </head>
 <body>
+
     <div class="progress-bar" id="progressBar"></div>
 
     <div class="corner-decor top-left"></div>
@@ -935,6 +1037,8 @@
     <div class="slide-counter">
         <span id="currentSlide">01</span> / <span id="totalSlides">05</span>
     </div>
+
+    <button class="music-toggle" id="musicToggle" title="Toggle Music">♪</button>
 
         <div class="particles-container" id="particles"></div>
 
@@ -974,8 +1078,8 @@
                 </div>
                 <div class="stat-card" data-delay="200">
                     <span class="stat-icon">☀️</span>
-                    <div class="stat-number" data-target="19">0</div>
-                    <div class="stat-label">Dias Juntos</div>
+                    <div class="stat-number" style="font-size: 1.8rem;">toda hora</div>
+                    <div class="stat-label">Vezes que pensei em você</div>
                 </div>
                 <div class="stat-card" data-delay="300">
                     <span class="stat-icon">⭐</span>
@@ -1023,7 +1127,7 @@
             <div class="letter-content">
                 <div class="letter-greeting">Minha querida,</div>
                 <p class="letter-text">
-                    Julho passou como um sopro, mas cada momento ficou gravado aqui dentro.
+                    Junho passou como um sopro, mas cada momento ficou gravado aqui dentro.
                     Cada risada, cada olhar, cada "eu te amo" dito com os olhos — tudo criou
                     memórias que vou guardar para sempre.
                 </p>
@@ -1044,41 +1148,35 @@
         <div class="things-container">
             <div class="things-header">
                 <h2>5 Coisas que eu mais gosto em você</h2>
-                <p>(clique em cada uma para revelar)</p>
             </div>
             <ul class="things-list">
-                <li class="things-item" data-delay="0">
+                <li class="things-item revealed" data-delay="0">
                     <span class="number">01</span>
                     <span class="text">O seu sorriso</span>
-                    <span class="hint">clique para revelar...</span>
                     <div class="revealed-text">Aquele que ilumina meu dia inteiro, mesmo nos dias cinza</div>
                 </li>
-                <li class="things-item" data-delay="100">
+                <li class="things-item revealed" data-delay="100">
                     <span class="number">02</span>
                     <span class="text">Como você me faz sentir</span>
-                    <span class="hint">clique para revelar...</span>
                     <div class="revealed-text">Em casa, mesmo quando estamos longe</div>
                 </li>
-                <li class="things-item" data-delay="200">
+                <li class="things-item revealed" data-delay="200">
                     <span class="number">03</span>
                     <span class="text">A sua risada</span>
-                    <span class="hint">clique para revelar...</span>
                     <div class="revealed-text">É a minha música favorita, eu podia ouvir o dia todo</div>
                 </li>
-                <li class="things-item" data-delay="300">
+                <li class="things-item revealed" data-delay="300">
                     <span class="number">04</span>
                     <span class="text">Você me fazer melhor</span>
-                    <span class="hint">clique para revelar...</span>
                     <div class="revealed-text">De um jeito que eu nem sei explicar, só sinto</div>
                 </li>
-                <li class="things-item" data-delay="400">
+                <li class="things-item revealed" data-delay="400">
                     <span class="number">05</span>
                     <span class="text">Tudo em você</span>
-                    <span class="hint">clique para revelar...</span>
                     <div class="revealed-text">Cada detalhe, cada imperfeição perfeita que é só sua</div>
                 </li>
             </ul>
-            <div class="things-footer">E tem muito mais... mas aí não ia ter fim 💕</div>
+            <div class="things-footer visible">E tem muito mais... mas aí não ia ter fim</div>
         </div>
     </section>
 
@@ -1091,7 +1189,7 @@
             </div>
             <h2 class="final-text">Te Amo</h2>
             <p class="final-subtext">vamos sair sábado? 🥺
-            <div class="final-footer">Feito com amor — Junho 2026</div>
+            <div class="final-footer">Feito com amor</div>
         </div>
     </section>
 
@@ -1123,12 +1221,12 @@
         }
 
         // Initial burst
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 10; i++) {
             setTimeout(createParticle, i * 200);
         }
 
         // Continuous spawning
-        setInterval(createParticle, 800);
+        setInterval(createParticle, 1200);
 
         // ============ SCROLL ANIMATIONS ============
         const observerOptions = {
